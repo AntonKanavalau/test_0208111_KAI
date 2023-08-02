@@ -1,3 +1,6 @@
+html{
+    font-size: 20px;
+}
 body {
     margin: 0;
     padding: 0;
@@ -9,4 +12,14 @@ body {
     align-items: center;
     align-content: center;
     justify-content: center;
+    flex-direction: column;
+}
+
+#headerSection{
+    display: flex;
+    align-items: center;
+    margin-top: 1.5rem;
+    width: 400px;
+    height: 30px;
+    border: solid 2px black
 }
