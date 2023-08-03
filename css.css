@@ -23,3 +23,8 @@ body {
     height: 30px;
     border: solid 2px black
 }
+
+.redBorder {
+    outline : 2px solid red;
+    outline-offset: -2px;
+}
