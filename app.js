@@ -3,10 +3,13 @@ import {containerBlock} from "./block.js"
 const textArea = document.getElementById('lengthField');
 const saveButton = document.getElementById('save');
 const headerSection = document.getElementById('headerSection');
+const arrangeButton = document.getElementById('arrange');
 
 saveButton.addEventListener('click', check);
+arrangeButton.addEventListener('click', arrange);
 headerSection.addEventListener('click', highlight);
 headerSection.addEventListener('dblclick', deleteBlock);
+
 
 function check() {
   let lengthBlock = Number(textArea.value);
@@ -31,8 +34,14 @@ function highlight(eo) {
   }
 }
 
+//Удаляем блок
 function deleteBlock(eo) {
   containerBlock.deleteBlock(eo);
+}
+
+//порядочиваем блоки
+function arrange(){
+  containerBlock.arrange();
 }
 
 //Проверка на число

@@ -24,15 +24,18 @@ export class Block {
     this.checkTotalBlockLength();
   };
 
+
   drawBox(){
-    let lastElem = this.arr[this.arr.length-1];
-      let div = `<div id="${lastElem.id}"
+    this.headerSection.innerHTML = '';
+    this.arr.forEach((elem) => {
+      let div = `<div id="${elem.id}"
                     style="position: absolute;
-                           width: ${lastElem.width}px;
-                           height: ${lastElem.height}px;
-                           left: ${lastElem.left}px;
-                           background-color: ${lastElem.color}"></div>`;
+                           width: ${elem.width}px;
+                           height: ${elem.height}px;
+                           left: ${elem.left}px;
+                           background-color: ${elem.color}"></div>`;
       document.getElementById('headerSection').insertAdjacentHTML('beforeend', div);
+    })
   };
 
   //Меняем отступ для новых блоков
@@ -42,9 +45,12 @@ export class Block {
     lastElem.left = this.sumPreviousElements(widthArray);
   };
 
+  //Удаление блоков
   deleteBlock(eo) {
-    eo.target.remove();
-    return this.arr = this.arr.filter(e => e.id !== eo.target.id);
+    if(eo.target.id !== 'headerSection'){
+      eo.target.remove();
+      return this.arr = this.arr.filter(e => e.id !== eo.target.id);
+    }
   }
 
   //сумируем длинну старых отрезков
@@ -66,7 +72,17 @@ export class Block {
      this.totalBlockLength = this.arr.reduce((accumulator, currentObject) => {
       return accumulator + currentObject.width;
     }, 0);
-     console.log(this.totalBlockLength);
+  }
+
+  arrange(){
+    for (let i = 1; i < this.arr.length; i++) {
+
+      if(this.arr[i].left > (this.arr[i-1].left + this.arr[i-1].width)){
+        this.arr[i].left = this.arr[i].left - (this.arr[i].left - (this.arr[i-1].left + this.arr[i-1].width));
+      }
+      this.drawBox();
+    }
+    return this.arr;
   }
 }
 
