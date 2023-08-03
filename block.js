@@ -1,16 +1,27 @@
 export class Block {
   constructor() {
     this.arr = [];
+    this.totalBlockLength = 0;
+    this.headerSection = document.getElementById('headerSection');
+    this.textArea = document.getElementById('lengthField');
   };
 
-  addBlock(width){
-    this.arr.push({
-      id: this.randomColor(),
-      width: width,
-      height: 25,
-      left: 0,
-      color: this.randomColor()
-    });
+  addBlock(width) {
+    if (this.totalBlockLength + Number(this.textArea.value) <= 400) {
+
+      this.arr.push({
+        id: this.randomColor(),
+        width: width,
+        height: 25,
+        left: 0,
+        color: this.randomColor()
+      });
+
+    } else {
+      alert('Нехватает места');
+    }
+
+    this.checkTotalBlockLength();
   };
 
   drawBox(){
@@ -24,32 +35,22 @@ export class Block {
       document.getElementById('headerSection').insertAdjacentHTML('beforeend', div);
   };
 
-  checkBlock() {
-    const headerSection = document.getElementById('headerSection');
-    let arrHeaderSection= headerSection.querySelectorAll('div');
-    /*const divIds = Array.from(headerSection).map(div => div.id);*/
-    console.log(arrHeaderSection);
-    console.log(uniqueArray);
-  };
-
-  //Находим элемент
-  getValue(id){
-    return this.arr.find(el => el.id === id);
-  };
-
   //Меняем отступ для новых блоков
   changeWidth(){
     let lastElem = this.arr[this.arr.length-1];
     const widthArray = this.arr.map(subarray => subarray.width);
     lastElem.left = this.sumPreviousElements(widthArray);
-
-    /*return this.arr.width.reduce((a,b) => a + b,0);*/
-    /*return this.arr;*/
   };
 
+  deleteBlock(eo) {
+    eo.target.remove();
+    return this.arr = this.arr.filter(e => e.id !== eo.target.id);
+  }
+
+  //сумируем длинну старых отрезков
    sumPreviousElements(arr) {
-    var sum = 0;
-    for (var i = 0; i < arr.length - 1; i++) {
+    let sum = 0;
+    for (let i = 0; i < arr.length - 1; i++) {
       sum += arr[i];
     }
     return sum;
@@ -60,6 +61,13 @@ export class Block {
     return "#" + ((1 << 24) * Math.random() | 0).toString(16).padStart(6, "0");
   };
 
+  //Длинна всех блоков на отрезке
+  checkTotalBlockLength() {
+     this.totalBlockLength = this.arr.reduce((accumulator, currentObject) => {
+      return accumulator + currentObject.width;
+    }, 0);
+     console.log(this.totalBlockLength);
+  }
 }
 
 export const containerBlock = new Block();
